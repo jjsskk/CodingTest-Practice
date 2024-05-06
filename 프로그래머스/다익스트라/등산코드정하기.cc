@@ -9,7 +9,9 @@ bool summits_check[50001] = {
     false,
 };
 int intensity[50001];
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // integritey, 산봉우리
+// 우선순위 큐로 하든 그냥 큐로 하든 통과임 ( 경로안에서의 최소(최단거리)를 찾는게 아니고 경로끼리의 최소 값을 찾는거니까)
+//  priority_queue<pair<int, int>, vector<pair<int,int>>, greater<pair<int,int>>> pq; // integritey, 산봉우리
+queue<pair<int, int>> pq; // integritey, 산봉우리
 vector<pair<int, int>> record;
 void bfs(vector<int> &gates)
 {
@@ -23,11 +25,13 @@ void bfs(vector<int> &gates)
 
     while (!pq.empty())
     {
-        int cur_v = pq.top().second;
-        int cur_in = pq.top().first; // intesity
+        // int cur_v = pq.top().second; // 산봉우리 번호
+        // int cur_in = pq.top().first; // intensity
+        int cur_v = pq.front().second; // 산봉우리 번호
+        int cur_in = pq.front().first; // intensity
         pq.pop();
 
-        if (cur_in > intensity[cur_v]) // 이거 없으면 test case21이 5000ms 나 걸려서 있어야할듯
+        if (cur_in > intensity[cur_v]) // 이거 없으면 testcase 21이 5000ms 나 걸려서 있어야할듯
             continue;
 
         if (summits_check[cur_v])
@@ -41,7 +45,7 @@ void bfs(vector<int> &gates)
             int next_v = ad[cur_v][i].second;
             int next_cost = ad[cur_v][i].first;
 
-            if (intensity[next_v] == -1 || max(cur_in, next_cost) < intensity[next_v])
+            if (intensity[next_v] == -1 || max(cur_in, next_cost) < intensity[next_v]) // 처음 방문하는 주변 노드일 경우 intensity가 -1이기 때문에 특정경로에서 최대의 intensity를 찾는게 보장이 됨
             {
                 intensity[next_v] = max(cur_in, next_cost);
                 pq.push({intensity[next_v], next_v});
