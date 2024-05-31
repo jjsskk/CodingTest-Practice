@@ -6,6 +6,7 @@ int n, l;
 int a[101][101];
 int b[101][101];
 int cnt = 0; // 길 개수
+
 void check(int road[][101])
 {
     for (int i = 0; i < n; i++)
@@ -62,6 +63,8 @@ void check(int road[][101])
             cnt++;
     }
 }
+
+
 int main()
 {
     ios::sync_with_stdio(false);
